@@ -20,21 +20,27 @@ const cardContainer = document.getElementById('card-container');
 const handleCategoryNews = async (categoryId) => {
     const response = await fetch(`https://openapi.programming-hero.com/api/videos/category/${categoryId}`);
     const data = await response.json();
-    console.log(data);
+    
 
     if (data.status === true) {
 
         cardContainer.textContent = '';
         const categoryNews = data.data;
 
+
         categoryNews.forEach(news => {
-            // console.log(news);
+            
             const div = document.createElement('div');
             div.classList = `card bg-base-100 shadow-xl`
             div.innerHTML = `
         <div class="grid justify-items-end">
             <img class="w-[100%] h-52 rounded-xl" src="${news.thumbnail}" alt="Shoes" />
-            <h3 class="bg-slate-700 rounded-md mt-[-30px] mr-3 text-white">${news.others.posted_date}</h3>    
+            <h3 class="bg-slate-700 rounded-md mt-[-30px] mr-3 text-white">${news.others.posted_date  ? 
+                convertSeconds(news.others.posted_date)
+                
+                : ''
+                
+                }</h3>    
         </div>
         <div class="flex gap-5 my-5">
             <div>
@@ -47,7 +53,7 @@ const handleCategoryNews = async (categoryId) => {
                      
                     <p>${news.authors[0].verified ? '<img src="images/blue badge.png" alt="">' : ''}</p> 
                 </div>
-                <h2 class="text-lg">${news.others.views}</h2>
+                <h2 class="text-lg">${news.others.views} </h2>
             </div>
         </div>
         `;
@@ -77,3 +83,16 @@ handleCategoryNews("1000");
 document.getElementById('blog-button').addEventListener('click', function () {
     window.location.href='BlogQuestions.html';
 })
+
+// second to time convart
+const convertSeconds = (seconds) => {
+    const hours = Math.floor(seconds / 3600)
+    const minutes = Math.floor((seconds % 3600) / 60)
+  
+    return `${hours} hrs ${minutes} min ago`
+  }
+
+
+
+
+  
